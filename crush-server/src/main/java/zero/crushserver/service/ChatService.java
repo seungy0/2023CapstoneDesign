@@ -1,14 +1,20 @@
 package zero.crushserver.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import zero.crushserver.domain.ChatGptRequest;
 import zero.crushserver.domain.ChatGptResponse;
 
+@Service
 public class ChatService {
+    @Value("${chatgpt.api.key}")
+    private String apiKey;
+
     private static RestTemplate restTemplate = new RestTemplate();
     public HttpEntity<ChatGptRequest> buildHttpEntity(ChatGptRequest chatRequest) {
         HttpHeaders headers = new HttpHeaders();

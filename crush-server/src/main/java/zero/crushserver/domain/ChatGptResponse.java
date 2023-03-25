@@ -83,20 +83,11 @@ public class ChatGptResponse {
         public Integer getPromptTokens() {
             return promptTokens;
         }
-        public void setPromptTokens(Integer promptTokens) {
-            this.promptTokens = promptTokens;
-        }
         public Integer getCompletionTokens() {
             return completionTokens;
         }
-        public void setCompletionTokens(Integer completionTokens) {
-            this.completionTokens = completionTokens;
-        }
         public Integer getTotalTokens() {
             return totalTokens;
-        }
-        public void setTotalTokens(Integer totalTokens) {
-            this.totalTokens = totalTokens;
         }
     }
     public static class Choice {
