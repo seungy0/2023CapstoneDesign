@@ -1,5 +1,6 @@
 package zero.crushserver.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -15,11 +16,18 @@ public class ChatService {
     @Value("${chatgpt.api.key}")
     private String apiKey;
 
-    private static RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
+
+    @Autowired
+    public ChatService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
+//    private static RestTemplate restTemplate = new RestTemplate();
     public HttpEntity<ChatGptRequest> buildHttpEntity(ChatGptRequest chatRequest) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.add("Authorization","Bearer ${YOUR_API_KEY}");
+        headers.add("Authorization","Bearer " + apiKey);
         return new HttpEntity<>(chatRequest,headers);
     }
 
