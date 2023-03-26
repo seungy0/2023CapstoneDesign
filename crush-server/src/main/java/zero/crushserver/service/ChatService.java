@@ -15,11 +15,11 @@ public class ChatService {
     @Value("${chatgpt.api.key}")
     private String apiKey;
 
-    private static RestTemplate restTemplate = new RestTemplate();
+    private static final RestTemplate restTemplate = new RestTemplate();
     public HttpEntity<ChatGptRequest> buildHttpEntity(ChatGptRequest chatRequest) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.add("Authorization","Bearer ${YOUR_API_KEY}");
+        headers.add("Authorization","Bearer " + apiKey);
         return new HttpEntity<>(chatRequest,headers);
     }
 
