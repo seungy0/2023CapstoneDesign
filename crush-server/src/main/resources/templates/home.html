@@ -16,40 +16,5 @@
 <h2>응답:</h2>
 <div id="response-container"></div>
 
-<script>
-        $(document).ready(function() {
-            $('#chat-form').on('submit', function(event) {
-                event.preventDefault();
-
-                let userInput = $('#user-input').val();
-
-                let apiUrl = 'https://api.openai.com/v1/completions';
-
-                let chatGptRequest = {
-                    prompt: userInput,
-                    maxTokens: 50,
-                    temperature: 0.7
-                };
-
-                $.ajax
-                ({
-                    type: 'POST',
-                    url: apiUrl,
-                    data: JSON.stringify(chatGptRequest),
-                    contentType: 'application/json',
-                    success: function(response) {
-                        let chatGptMessage = response.choices[0].message;
-                        $('#response-container').text(chatGptMessage.content);
-                        },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                    console.error('Error: ' + textStatus + ', ' + errorThrown);
-                    $('#response-container').text('Error: Could not get response from server.');
-                    }
-                });
-              });
-            });
-
-</script>
-
 </body>
 </html>
