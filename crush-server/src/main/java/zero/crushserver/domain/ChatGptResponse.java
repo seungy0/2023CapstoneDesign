@@ -6,29 +6,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class ChatGptResponse {
-    // {
-    //   "id":"chatcmpl-abc123",
-    //   "object":"chat.completion",
-    //   "created":1677858242,
-    //   "model":"gpt-3.5-turbo-0301",
-    //   "usage":{
-    //      "prompt_tokens":13,
-    //      "completion_tokens":7,
-    //      "total_tokens":20
-    //   },
-    //   "choices":[
-    //      {
-    //         "message":{
-    //            "role":"assistant",
-    //            "content":"\n\nThis is a test!"
-    //         },
-    //         "finish_reason":"stop",
-    //         "index":0
-    //      }
-    //   ]
-    //}
-    // 위의 json 데이터를 ChatGptResponse 클래스로 매핑해줘
-    // 아래에 코드를 작성해주세요.
     private String id;
     private String object;
     private LocalDate created;

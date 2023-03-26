@@ -14,29 +14,26 @@ import java.util.List;
 @SpringBootTest
 class ChatServiceTest {
 
+    @Autowired
+    ChatService chatService;
     @Test
     void buildHttpEntity() {
     }
 
-    @Autowired
-    private ChatService chatService;
-
     @Test
-    void getResponse() throws JsonProcessingException {
+    void getResponse() {
         ChatGptRequest chatGptRequest = new ChatGptRequest();
         chatGptRequest.setModel("gpt-3.5-turbo");
         ChatGptMessage chatGptMessage = new ChatGptMessage();
         chatGptMessage.setRole("user");
-        chatGptMessage.setContent("hi, how are you?");
+        chatGptMessage.setContent("Hello!");
         List<ChatGptMessage> list = List.of(chatGptMessage);
         chatGptRequest.setMessages(list);
         chatGptRequest.setMaxTokens(10);
         chatGptRequest.setTemperature(0.5);
         chatGptRequest.setTopP(1.0);
-        //ChatService chatService = new ChatService();
         HttpEntity<ChatGptRequest> chatGptRequestHttpEntity = chatService.buildHttpEntity(chatGptRequest);
         ChatGptResponse response = chatService.getResponse(chatGptRequestHttpEntity);
         System.out.println(response.getChoices().get(0).getMessage().getContent());
-        //System.out.println(response.getChoices().get(0).getMessage().getContent());
     }
 }
