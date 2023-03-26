@@ -32,12 +32,13 @@ public class HomeController {
     @PostMapping("/chat")
     @ResponseBody
     public ChatGptResponse chat(@RequestBody List<ChatGptMessage> chatGptMessages) {
-        ChatGptRequest chatGptRequest = new ChatGptRequest();
-        chatGptRequest.setModel("gpt-3.5-turbo");
-        chatGptRequest.setMessages(chatGptMessages);
-        chatGptRequest.setMaxTokens(200);
-        chatGptRequest.setTemperature(0.5);
-        chatGptRequest.setTopP(1.0);
+        ChatGptRequest chatGptRequest = ChatGptRequest.builder()
+                .model("gpt-3.5-turbo")
+                .messages(chatGptMessages)
+                .maxTokens(200)
+                .temperature(0.5)
+                .topP(1.0)
+                .build();
         return chatService.getResponse(chatService.buildHttpEntity(chatGptRequest));
     }
 }
