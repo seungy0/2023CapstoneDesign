@@ -26,7 +26,7 @@ class ChatServiceTest {
         chatGptRequest.setModel("gpt-3.5-turbo");
         ChatGptMessage chatGptMessage = new ChatGptMessage();
         chatGptMessage.setRole("user");
-        chatGptMessage.setContent("Hello!");
+        chatGptMessage.setContent("안녕!");
         List<ChatGptMessage> list = List.of(chatGptMessage);
         chatGptRequest.setMessages(list);
         chatGptRequest.setMaxTokens(10);
