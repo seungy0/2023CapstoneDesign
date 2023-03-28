@@ -22,7 +22,7 @@ class ChatServiceTest {
 
     @Test
     void getResponse() {
-        ChatGptRequest chatGptRequest = new ChatGptRequest();
+        ChatGptRequest chatGptRequest = ChatGptRequest.builder().build();
         chatGptRequest.setModel("gpt-3.5-turbo");
         ChatGptMessage chatGptMessage = new ChatGptMessage();
         chatGptMessage.setRole("user");
