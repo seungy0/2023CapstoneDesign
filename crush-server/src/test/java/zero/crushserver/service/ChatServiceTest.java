@@ -22,16 +22,16 @@ class ChatServiceTest {
 
     @Test
     void getResponse() {
-        ChatGptRequest chatGptRequest = new ChatGptRequest();
-        chatGptRequest.setModel("gpt-3.5-turbo");
         ChatGptMessage chatGptMessage = new ChatGptMessage();
         chatGptMessage.setRole("user");
         chatGptMessage.setContent("Hello!");
-        List<ChatGptMessage> list = List.of(chatGptMessage);
-        chatGptRequest.setMessages(list);
-        chatGptRequest.setMaxTokens(10);
-        chatGptRequest.setTemperature(0.5);
-        chatGptRequest.setTopP(1.0);
+        ChatGptRequest chatGptRequest = ChatGptRequest.builder()
+                .model("gpt-3.5-turbo")
+                .messages(List.of(chatGptMessage))
+                .maxTokens(10)
+                .temperature(0.5)
+                .topP(1.0)
+                .build();
         HttpEntity<ChatGptRequest> chatGptRequestHttpEntity = chatService.buildHttpEntity(chatGptRequest);
         ChatGptResponse response = chatService.getResponse(chatGptRequestHttpEntity);
         System.out.println(response.getChoices().get(0).getMessage().getContent());
