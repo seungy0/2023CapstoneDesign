@@ -19,10 +19,12 @@ public class HomeController {
         this.chatService = chatService;
     }
 
+    /*
     @GetMapping("/")
     public String home() {
         return "home";
     }
+     */
 
     /**
      * Chat with GPT-3
@@ -40,5 +42,43 @@ public class HomeController {
                 .topP(1.0)
                 .build();
         return chatService.getResponse(chatService.buildHttpEntity(chatGptRequest));
+    }
+
+    /**
+     * Process client message and return OpenAI response
+     * @param clientMessage ChatGptMessage from the client
+     * @return ChatGptResponse
+     */
+    @PostMapping("/recommend")
+    @ResponseBody
+    public ChatGptResponse recommend(@RequestBody ChatGptMessage clientMessage) {
+
+        //사전설정 메시지
+        //3.5-chatting API의 system_role과 유사하게 프롬프트를 구현하였다.
+        String system_role = "You are a competent fashion stylist. Look at a given set of clothes and their conditions and recommend suitable combinations in Korean. It must be appropriate for the given options."
+                + "Follow the output form unconditionally: {[cloth1,cloth2,describe Why we recommend it],[ cloth1, cloth2, describe Why we recommend it], ...}. Up to 3 combinations.";
+
+        //새로운 메시지 만들기
+        String combined_message = system_role + " user_input: "+ clientMessage.getContent();
+
+        ChatGptMessage combinedChatGptMessage = new ChatGptMessage();
+        combinedChatGptMessage.setRole("user");
+        combinedChatGptMessage.setContent(combined_message);
+
+        List<ChatGptMessage> chatGptMessages = List.of(combinedChatGptMessage);
+
+        //OpenAPI에 요청을 보내기
+        ChatGptRequest chatGptRequest = ChatGptRequest.builder()
+                .model("gpt-3.5-turbo")
+                .messages(chatGptMessages)
+                .maxTokens(500)
+                .temperature(0.5)
+                .topP(0.9)
+                .build();
+
+        //OpenAPI의 응답을 받아서 클라이언트에게 전달하기
+        ChatGptResponse chatGptResponse = chatService.getResponse(chatService.buildHttpEntity(chatGptRequest));
+
+        return chatGptResponse;
     }
 }
