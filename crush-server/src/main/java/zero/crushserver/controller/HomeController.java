@@ -13,18 +13,18 @@ import java.util.List;
 @Controller
 public class HomeController {
     private final ChatService chatService;
+    private final ChatGptMessage chatGptMessage;
 
     @Autowired
-    HomeController(ChatService chatService) {
+    HomeController(ChatService chatService, ChatGptMessage chatGptMessage) {
         this.chatService = chatService;
+        this.chatGptMessage = chatGptMessage;
     }
 
-    /*
     @GetMapping("/")
     public String home() {
         return "home";
     }
-     */
 
     /**
      * Chat with GPT-3
@@ -53,22 +53,14 @@ public class HomeController {
     @ResponseBody
     public ChatGptResponse recommend(@RequestBody ChatGptMessage clientMessage) {
 
-        //사전설정 메시지
-        //3.5-chatting API의 system_role과 유사하게 프롬프트를 구현하였다.
-        String system_role = "You are a competent fashion stylist. Look at a given set of clothes and their conditions and recommend suitable combinations in Korean. It must be appropriate for the given options."
-                + "Follow the output form unconditionally: {[cloth1,cloth2,describe Why we recommend it],[ cloth1, cloth2, describe Why we recommend it], ...}. Up to 3 combinations.";
+        String combinedMessage = chatService.getSystemRoleMessage() + " user_input: "+ clientMessage.getContent();
 
-        //새로운 메시지 만들기
-        String combined_message = system_role + " user_input: "+ clientMessage.getContent();
+        chatGptMessage.setRole("user");
+        chatGptMessage.setContent(combinedMessage);
 
-        ChatGptMessage combinedChatGptMessage = new ChatGptMessage();
-        combinedChatGptMessage.setRole("user");
-        combinedChatGptMessage.setContent(combined_message);
+        List<ChatGptMessage> chatGptMessages = List.of(chatGptMessage);
 
-        List<ChatGptMessage> chatGptMessages = List.of(combinedChatGptMessage);
-
-        //OpenAPI에 요청을 보내기
-        ChatGptRequest chatGptRequest = ChatGptRequest.builder()
+        ChatGptRequest chatGptRequest = ChatGptRequest.builder() //OpenAPI에 요청을 보내기
                 .model("gpt-3.5-turbo")
                 .messages(chatGptMessages)
                 .maxTokens(500)
@@ -76,9 +68,7 @@ public class HomeController {
                 .topP(0.9)
                 .build();
 
-        //OpenAPI의 응답을 받아서 클라이언트에게 전달하기
         ChatGptResponse chatGptResponse = chatService.getResponse(chatService.buildHttpEntity(chatGptRequest));
-
-        return chatGptResponse;
+        return chatGptResponse; //OpenAPI의 응답을 받아서 클라이언트에게 전달하기
     }
 }
