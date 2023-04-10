@@ -1,11 +1,17 @@
 package zero.crushserver.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import zero.crushserver.domain.ChatGptMessage;
 import zero.crushserver.domain.ChatGptRequest;
 import zero.crushserver.domain.ChatGptResponse;
+import zero.crushserver.domain.RecommendRequest;
 import zero.crushserver.service.ChatService;
 
 import java.util.List;
@@ -14,7 +20,7 @@ import java.util.List;
 public class HomeController {
     private final ChatService chatService;
     private final ChatGptMessage chatGptMessage;
-
+    private final ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
     HomeController(ChatService chatService, ChatGptMessage chatGptMessage) {
         this.chatService = chatService;
@@ -46,15 +52,14 @@ public class HomeController {
 
     /**
      * Process client message and return OpenAI response
-     * @param clientMessage ChatGptMessage from the client
+     * @param recommendRequest Cloths from the client
      * @return ChatGptResponse
      */
     @PostMapping("/recommend")
     @ResponseBody
-    public ChatGptResponse recommend(@RequestBody ChatGptMessage clientMessage) {
-
-        String combinedMessage = chatService.getSystemRoleMessage() + " user_input: "+ clientMessage.getContent();
-
+    public String recommend(@RequestBody RecommendRequest recommendRequest) throws JsonProcessingException {
+        String combinedMessage = chatService.getSystemRoleMessage() + " user_input: "+ objectMapper.writeValueAsString(recommendRequest.getCloths());
+        System.out.println(combinedMessage);
         chatGptMessage.setRole("user");
         chatGptMessage.setContent(combinedMessage);
 
@@ -69,6 +74,8 @@ public class HomeController {
                 .build();
 
         ChatGptResponse chatGptResponse = chatService.getResponse(chatService.buildHttpEntity(chatGptRequest));
-        return chatGptResponse; //OpenAPI의 응답을 받아서 클라이언트에게 전달하기
+        System.out.println(chatGptResponse.getChoices().get(0).getMessage().getContent());
+
+        return chatGptResponse.getChoices().get(0).getMessage().getContent(); //OpenAPI의 응답을 받아서 클라이언트에게 전달하기
     }
 }
