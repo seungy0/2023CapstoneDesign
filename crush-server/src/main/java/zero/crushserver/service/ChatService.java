@@ -18,7 +18,7 @@ public class ChatService {
     //사전설정 메시지, 3.5-chatting API의 system_role과 유사하게 프롬프트를 구현.
     public String getSystemRoleMessage() {
         return "You are a competent fashion stylist. Look at a given set of clothes and their conditions and recommend suitable combinations in Korean. It must be appropriate for the given options."
-                + "Follow the output form unconditionally: {[cloth1,cloth2,describe Why we recommend it],[ cloth1, cloth2, describe Why we recommend it], ...}. Up to 3 combinations.";
+                + "Follow the output form unconditionally: [[cloth1,cloth2,describe Why we recommend it],[ cloth1, cloth2, describe Why we recommend it], ...]. Up to 3 combinations.";
     }
 
     private static final RestTemplate restTemplate = new RestTemplate();
