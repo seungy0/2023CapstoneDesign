@@ -22,5 +22,7 @@ public class RecommendRequest {
         String occasion;
         String season;
         String style;
+        String age;
+        String sex;
     }
 }

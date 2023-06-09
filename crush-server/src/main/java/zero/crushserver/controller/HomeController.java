@@ -58,7 +58,9 @@ public class HomeController {
     @PostMapping("/recommend")
     @ResponseBody
     public String recommend(@RequestBody RecommendRequest recommendRequest) throws JsonProcessingException {
-        String combinedMessage = chatService.getSystemRoleMessage() + " user_input: "+ objectMapper.writeValueAsString(recommendRequest.getCloths());
+        String combinedMessage = chatService.getSystemRoleMessage() +
+                " user_input: "+ objectMapper.writeValueAsString(recommendRequest.getCloths()) +
+                ", options: " + objectMapper.writeValueAsString(recommendRequest.getOptions());
         System.out.println(combinedMessage);
         chatGptMessage.setRole("user");
         chatGptMessage.setContent(combinedMessage);
