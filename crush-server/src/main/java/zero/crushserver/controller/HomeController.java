@@ -4,10 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import zero.crushserver.domain.ChatGptMessage;
 import zero.crushserver.domain.ChatGptRequest;
 import zero.crushserver.domain.ChatGptResponse;
@@ -80,4 +77,5 @@ public class HomeController {
 
         return chatGptResponse.getChoices().get(0).getMessage().getContent(); //OpenAPI의 응답을 받아서 클라이언트에게 전달하기
     }
+
 }

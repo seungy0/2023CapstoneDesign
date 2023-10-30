@@ -3,7 +3,6 @@ package zero.crushserver.domain;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -31,6 +30,5 @@ public class ChatGptResponse {
         @JsonProperty("finish_reason")
         private String finishReason;
         private Integer index;
-
     }
 }
